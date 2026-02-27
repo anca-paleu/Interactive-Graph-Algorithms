@@ -1,49 +1,31 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "node.h"
-#include "edge.h"
-#include "kdtree.h"
+#include "structures.h"
 #include <vector>
-#include <QString>
+#include <string>
 
-class Graph
-{
+class Graph {
 public:
-    Graph();
+    void loadFromFile(const std::string& filename);
+    void runFloydWarshall();
+    void runKruskal();
+    void generateTSP();
 
-    void addNode(QPoint p);
-    void addEdge(Node f, Node s);
-
-    void addParsedNode(int id, int x, int y);
-    void addParsedEdge(int idSource, int idDest);
-    void clear();
-
-    const std::vector<Node>& getNodes() const;
-    const std::vector<Edge>& getEdges() const;
-    const std::vector<std::vector<int>>& getAdjacencyMatrix() const;
-
-    bool edgeExists(Node f, Node s) const;
-    void updateNodePosition(const Node& updatedNode);
-
-    Node getNodeAtPos(QPoint p, double radius) const;
-    void rebuildSpatialIndex();
-
-    void setDirected(bool directed);
-    bool isDirected() const;
-
-    bool loadFromXML(const QString& filepath);
+    const std::vector<City>& getCities() const;
+    const std::vector<Edge>& getInitialEdges() const;
+    const std::vector<std::vector<double>>& getAdjacencyMatrix() const;
+    const std::vector<Edge>& getMSTEdges() const;
+    const std::vector<int>& getTSPCircuit() const;
 
 private:
-    std::vector<Node> m_nodes;
-    std::vector<Edge> m_edges;
-    std::vector<std::vector<int>> m_adjacencyMatrix;
+    std::vector<City> cities;
+    std::vector<Edge> initialEdges;
+    std::vector<std::vector<double>> adjMatrix;
+    std::vector<Edge> mstEdges;
+    std::vector<int> tspCircuit;
 
-    KDTree m_kdTree;
-    bool m_isDirected = false;
-
-    void resizeMatrix(int newSize);
-    void updateMatrixEdge(int uIdx, int vIdx, int val);
+    void dfsPreorder(int node, const std::vector<std::vector<int>>& mstAdj, std::vector<bool>& visited);
 };
 
 #endif

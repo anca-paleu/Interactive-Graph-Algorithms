@@ -1,13 +1,15 @@
-#pragma once
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QMouseEvent>
-#include <QWheelEvent>
-#include <QPainter>
-#include "MapGraph.h"
-#include "KDTree.h"
+#include "graph.h"
 
-class MainWindow : public QMainWindow {
+QT_BEGIN_NAMESPACE
+namespace Ui { class MainWindow; }
+QT_END_NAMESPACE
+
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
 public:
@@ -16,26 +18,19 @@ public:
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-    void wheelEvent(QWheelEvent *event) override;
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
+
+private slots:
+    void on_btnLoad_clicked();
+    void on_btnFloyd_clicked();
+    void on_btnMST_clicked();
+    void on_btnTSP_clicked();
 
 private:
-    MapGraph map;
-    KDTree* kdtree;
+    Ui::MainWindow *ui;
+    Graph graph;
+    DrawMode currentMode;
 
-    int startNode = -1;
-    int endNode = -1;
-    std::vector<int> currentPath;
-
-    double scale = 1.0;
-    double offsetX = 0.0;
-    double offsetY = 0.0;
-    bool isDragging = false;
-    QPoint lastMousePos;
-
-    QPointF mapToScreen(double lon, double lat);
-    QPointF screenToMap(int x, int y);
-    void fitMapToScreen();
+    QPointF scaleCoordinates(double x, double y, double width, double height);
+    void drawGraph(QPainter& painter);
 };
+#endif
