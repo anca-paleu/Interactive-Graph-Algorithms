@@ -1,4 +1,4 @@
-# Graph Algorithms & Visualizations in C++
+# Interactive-Graph-Algorithms
 
 A comprehensive collection of graph theory algorithms implemented in C++. This repository includes interactive Graphical User Interfaces (GUI) to visualize complex algorithmic processes such as pathfinding, network flows, and NP-hard problem approximations.
 
